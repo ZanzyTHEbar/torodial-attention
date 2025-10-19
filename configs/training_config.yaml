@@ -1,0 +1,105 @@
+data:
+  dataset: periodic           # periodic | sinusoidal | openwebtext
+  max_len: 128
+  num_samples: 1000
+  period: 32                  # for periodic dataset
+  frequency: 0.1              # for sinusoidal dataset
+
+toroidal_attention:
+  depth: 4
+  lambda_distance: 0.1
+  fusion_mode: low_rank       # low_rank | attention | mean
+  fusion_rank: 1              # ignored for mean
+  dropout: 0.0
+  target_layer_idx: 0
+  # Backend and options
+  backend: sdpa               # sdpa | flash2
+  window_size: null           # integer for SWA window; null disables
+  allow_flash2: true          # if false, always disable flash2
+  # Latent streaming (inference oriented)
+  latent_dim: null            # set integer to enable latent streaming
+  latent_update: gru          # gru | linear
+
+training:
+  batch_size: 4
+  epochs: 1
+  learning_rate: 5.0e-5
+  warmup_steps: 0
+  freeze_base: true
+
+runtime:
+  device: auto                # auto | cpu | cuda
+  dtype: float32              # float16 | bfloat16 | float32
+# Toroidal Attention Training Configuration
+
+# Model Configuration
+model:
+  name: "microsoft/phi-2"
+  layer_idx: 0  # Which layer to replace with toroidal attention
+
+# Toroidal Attention Parameters
+toroidal:
+  depth: 4                      # Number of depth platters (D)
+  lambda_distance: 0.1          # Distance bias scaling factor (λ)
+  fusion_mode: "low_rank"       # Fusion strategy: low_rank, attention, or mean
+  fusion_rank: null             # Rank for low-rank fusion (null = depth//4)
+
+# Dataset Configuration
+dataset:
+  type: "periodic"              # periodic, sinusoidal, or openwebtext
+  seq_len: 128                  # Sequence length
+  n_train: 1000                 # Number of training samples
+  n_val: 200                    # Number of validation samples
+  
+  # For periodic dataset
+  periodic:
+    period: 32                  # Repetition period
+    noise_prob: 0.1             # Noise probability
+
+  # For sinusoidal dataset
+  sinusoidal:
+    n_frequencies: 3            # Number of frequency components
+    vocab_size: 256             # Vocabulary size
+  
+  # For OpenWebText
+  openwebtext:
+    overlap: 0.5                # Window overlap ratio
+
+# Training Hyperparameters
+training:
+  batch_size: 8
+  learning_rate: 1.0e-4
+  num_epochs: 10
+  warmup_steps: 100
+  max_grad_norm: 1.0
+  eval_every: 100               # Evaluate every N steps
+
+# Optimizer Configuration
+optimizer:
+  type: "adamw"
+  betas: [0.9, 0.95]
+  weight_decay: 0.1
+  eps: 1.0e-8
+
+# System Configuration
+system:
+  device: "auto"                # auto, cuda, or cpu
+  save_dir: "checkpoints"
+  log_dir: "logs"
+  seed: 42
+
+# Ablation Study Configurations
+ablation:
+  experiments:
+    - name: "toroidal_2d"
+      depth: 1
+      fusion_mode: "mean"
+      
+    - name: "toroidal_3d_lowrank"
+      depth: 4
+      fusion_mode: "low_rank"
+      
+    - name: "toroidal_3d_attention"
+      depth: 4
+      fusion_mode: "attention"
+

@@ -1,0 +1,135 @@
+# Experiment Configurations for TAM Evaluation
+#
+# This file defines systematic ablations and baseline comparisons.
+# Run with: RUN_EXPERIMENTS=1 python scripts/run_experiments.py --config configs/experiments.yaml
+
+experiments:
+  # Baseline: Vanilla Phi-2
+  - name: phi2_baseline
+    model_type: phi2
+  
+  # TAM: Core configuration
+  - name: tam_d4_lambda0.1
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+    backend: sdpa
+    use_orthogonal_pe: true
+  
+  # Ablation: Depth
+  - name: tam_d2_lambda0.1
+    model_type: tam
+    depth: 2
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+  
+  - name: tam_d8_lambda0.1
+    model_type: tam
+    depth: 8
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+  
+  # Ablation: Lambda (distance penalty)
+  - name: tam_d4_lambda0.0
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.0
+    fusion_mode: low_rank
+  
+  - name: tam_d4_lambda0.2
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.2
+    fusion_mode: low_rank
+  
+  # Ablation: Fusion mode
+  - name: tam_d4_fusion_attention
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: attention
+  
+  - name: tam_d4_fusion_mean
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: mean
+  
+  # Ablation: Sliding window
+  - name: tam_d4_window256
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+    window_size: 256
+  
+  - name: tam_d4_window512
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+    window_size: 512
+  
+  # Ablation: Positional encoding
+  - name: tam_d4_standard_pe
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.1
+    fusion_mode: low_rank
+    use_orthogonal_pe: false
+  
+  # Baseline: SWA-only (no toroidal structure)
+  - name: swa_window256
+    model_type: swa
+    window_size: 256
+  
+  # Flash2 (if available)
+  - name: tam_d4_flash2
+    model_type: tam
+    depth: 4
+    lambda_distance: 0.0  # Required for flash2
+    fusion_mode: low_rank
+    backend: flash2
+
+# Tasks to evaluate on
+tasks:
+  # LongBench
+  - narrativeqa
+  - qasper
+  - multifieldqa_en
+  - hotpotqa
+  - 2wikimqa
+  - musique
+  - gov_report
+  - qmsum
+  - multi_news
+  - trec
+  - triviaqa
+  - samsum
+  - passage_count
+  - passage_retrieval_en
+  - lcc
+  - repobench-p
+  
+  # SCROLLS
+  - qasper_scrolls
+  - narrative_qa_scrolls
+  - quality
+  - qmsum_scrolls
+  - summ_screen_fd
+  - gov_report_scrolls
+  - contract_nli
+  
+  # Synthetic
+  - synthetic_periodic
+  - synthetic_sinusoidal
+
+# Evaluation settings
+eval_settings:
+  max_samples: 100  # Limit per task for quick testing
+  batch_size: 1
+  max_new_tokens: 100
+  device: cuda
+  torch_dtype: float16
+

@@ -1,0 +1,99 @@
+# ----------------------------------------------------------------------------
+# Core Python ignores
+# ----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+.eggs/
+*.egg
+*.egg-info/
+toroidal_attention.egg-info/
+pip-wheel-metadata/
+*.whl
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+nosetests.xml
+*.cover
+*.py,cover
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# Type checking / linters
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Caches
+.cache/
+__pypackages__/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.direnv/
+.envrc
+.python-version
+
+# Environment & secrets
+.env
+.env.*
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+.cursor/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ----------------------------------------------------------------------------
+# Project-specific ignores
+# ----------------------------------------------------------------------------
+# Training & experiment artifacts
+checkpoints/
+logs/
+runs/
+outputs/
+artifacts/
+wandb/
+.wandb/
+
+# Local config overrides (keep committed base configs)
+configs/*local*.yaml
+configs/*secrets*.*
+
+# Keep lockfiles tracked (uv.lock, etc.) — do NOT ignore
+# uv.lock
