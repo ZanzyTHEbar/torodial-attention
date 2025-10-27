@@ -1,0 +1,31 @@
+{
+  "baseline": {
+    "model": "Phi-2 Baseline (no toroidal attention)",
+    "dataset": "WikiText-2 validation",
+    "samples": 33,
+    "avg_loss": 6.484066688653194,
+    "perplexity": 654.6277075696496,
+    "device": "cuda",
+    "dtype": "float16"
+  },
+  "toroidal_single_layer": {
+    "model": "Phi-2 + Toroidal Attention (layer 0, depth=2, lambda=0.1)",
+    "dataset": "WikiText-2 validation",
+    "samples": 50,
+    "avg_loss": 7.4297,
+    "perplexity": 1685.32,
+    "config": {
+      "layer": 0,
+      "depth": 2,
+      "lambda_distance": 0.1,
+      "fusion_mode": "low_rank"
+    }
+  },
+  "difference": {
+    "loss": 0.9456333113468061,
+    "perplexity": 1030.6922924303503,
+    "loss_pct": 14.583954125604832,
+    "perplexity_pct": 157.44709252482855
+  },
+  "interpretation": "Single-layer replacement shows higher perplexity (expected). Multi-layer experiments needed for fair comparison."
+}

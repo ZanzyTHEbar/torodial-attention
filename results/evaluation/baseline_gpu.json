@@ -1,0 +1,16 @@
+{
+  "config": {
+    "baseline": true,
+    "layer_indices": null,
+    "depth": null,
+    "lambda_distance": null,
+    "checkpoint": null
+  },
+  "results": {
+    "wikitext2": {
+      "perplexity": 13895.95726673042,
+      "loss": 9.539353232695316,
+      "num_tokens": 11799
+    }
+  }
+}

@@ -1,0 +1,164 @@
+[
+  {
+    "perplexity": 1365.0443055555502,
+    "loss": 7.218942165374756,
+    "total_tokens": 2555,
+    "time_seconds": 59.516942739486694,
+    "tokens_per_second": 42.92895236879964,
+    "config": {
+      "model": "phi-2",
+      "variant": "baseline",
+      "num_layers": 32,
+      "hidden_size": 2560,
+      "num_heads": 32
+    }
+  },
+  {
+    "perplexity": 2940.9467032464104,
+    "loss": 7.98648681640625,
+    "total_tokens": 2555,
+    "time_seconds": 58.07637596130371,
+    "tokens_per_second": 43.99379192844947,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_1layer_d2_l0.0",
+      "replaced_layers": [
+        0
+      ],
+      "depth": 2,
+      "lambda_distance": 0.0,
+      "num_replaced_layers": 1
+    }
+  },
+  {
+    "perplexity": 2853.35034274728,
+    "loss": 7.956249141693116,
+    "total_tokens": 2555,
+    "time_seconds": 58.96137738227844,
+    "tokens_per_second": 43.333451717631284,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_1layer_d2_l0.1",
+      "replaced_layers": [
+        0
+      ],
+      "depth": 2,
+      "lambda_distance": 0.1,
+      "num_replaced_layers": 1
+    }
+  },
+  {
+    "perplexity": 2760.37793647755,
+    "loss": 7.923122882843018,
+    "total_tokens": 2555,
+    "time_seconds": 57.9967725276947,
+    "tokens_per_second": 44.05417557985546,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_1layer_d4_l0.0",
+      "replaced_layers": [
+        0
+      ],
+      "depth": 4,
+      "lambda_distance": 0.0,
+      "num_replaced_layers": 1
+    }
+  },
+  {
+    "perplexity": 2814.139752035124,
+    "loss": 7.94241189956665,
+    "total_tokens": 2555,
+    "time_seconds": 58.404868602752686,
+    "tokens_per_second": 43.74635302029564,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_1layer_d4_l0.1",
+      "replaced_layers": [
+        0
+      ],
+      "depth": 4,
+      "lambda_distance": 0.1,
+      "num_replaced_layers": 1
+    }
+  },
+  {
+    "perplexity": 5946.342121032421,
+    "loss": 8.690531539916993,
+    "total_tokens": 2555,
+    "time_seconds": 58.831324100494385,
+    "tokens_per_second": 43.42924520338187,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_4layer_d2_l0.0",
+      "replaced_layers": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "depth": 2,
+      "lambda_distance": 0.0,
+      "num_replaced_layers": 4
+    }
+  },
+  {
+    "perplexity": 5368.173032973416,
+    "loss": 8.58824291229248,
+    "total_tokens": 2555,
+    "time_seconds": 58.619033098220825,
+    "tokens_per_second": 43.58652582547541,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_4layer_d2_l0.1",
+      "replaced_layers": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "depth": 2,
+      "lambda_distance": 0.1,
+      "num_replaced_layers": 4
+    }
+  },
+  {
+    "perplexity": 4274.372429576493,
+    "loss": 8.360392570495605,
+    "total_tokens": 2555,
+    "time_seconds": 60.04577136039734,
+    "tokens_per_second": 42.55087314416828,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_4layer_d4_l0.0",
+      "replaced_layers": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "depth": 4,
+      "lambda_distance": 0.0,
+      "num_replaced_layers": 4
+    }
+  },
+  {
+    "perplexity": 4441.293335756948,
+    "loss": 8.39870090484619,
+    "total_tokens": 2555,
+    "time_seconds": 59.64464497566223,
+    "tokens_per_second": 42.837039285631725,
+    "config": {
+      "model": "phi-2",
+      "variant": "toroidal_4layer_d4_l0.1",
+      "replaced_layers": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "depth": 4,
+      "lambda_distance": 0.1,
+      "num_replaced_layers": 4
+    }
+  }
+]

@@ -1,0 +1,320 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model and dataset...
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.64s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.26it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.09it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+Using device: cpu
+
+================================================================================
+BASELINE: Standard Phi-2
+================================================================================
+  Running baseline on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:25:22, 11.92s/it]Computing perplexity:   0%|          | 2/4358 [00:24<14:38:51, 12.11s/it]Computing perplexity:   0%|          | 3/4358 [00:36<14:30:08, 11.99s/it]Computing perplexity:   0%|          | 4/4358 [00:47<14:27:34, 11.96s/it]Computing perplexity:   0%|          | 5/4358 [00:59<14:18:15, 11.83s/it]Computing perplexity:   0%|          | 5/4358 [00:59<14:23:35, 11.90s/it]
+
+Baseline Perplexity: 1365.04
+Baseline Loss: 7.2189
+Throughput: 43 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.57s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.30it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.12it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 1layer_d2_l0.0
+  Layers: [0]
+  Depth: 2
+  Lambda: 0.0
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:08:37, 11.69s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:05:02, 11.64s/it]Computing perplexity:   0%|          | 3/4358 [00:34<14:03:40, 11.62s/it]Computing perplexity:   0%|          | 4/4358 [00:46<14:01:05, 11.59s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:02:06, 11.61s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:02:40, 11.62s/it]
+
+Toroidal (1 layer, d=2, λ=0.0) Perplexity: 2940.95
+Loss: 7.9865
+Throughput: 44 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.56s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.34it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.15it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 1layer_d2_l0.1
+  Layers: [0]
+  Depth: 2
+  Lambda: 0.1
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:23:38, 11.89s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:21:54, 11.87s/it]Computing perplexity:   0%|          | 3/4358 [00:35<14:20:30, 11.86s/it]Computing perplexity:   0%|          | 4/4358 [00:47<14:17:01, 11.81s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:12:12, 11.75s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:15:31, 11.79s/it]
+
+Toroidal (1 layer, d=2, λ=0.1) Perplexity: 2853.35
+Loss: 7.9562
+Throughput: 43 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.40s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.47it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.27it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 1layer_d4_l0.0
+  Layers: [0]
+  Depth: 4
+  Lambda: 0.0
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,648
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:01:25, 11.59s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:05:14, 11.64s/it]Computing perplexity:   0%|          | 3/4358 [00:34<14:07:18, 11.67s/it]Computing perplexity:   0%|          | 4/4358 [00:46<14:02:54, 11.62s/it]Computing perplexity:   0%|          | 5/4358 [00:57<13:59:25, 11.57s/it]Computing perplexity:   0%|          | 5/4358 [00:57<14:01:31, 11.60s/it]
+
+Toroidal (1 layer, d=4, λ=0.0) Perplexity: 2760.38
+Loss: 7.9231
+Throughput: 44 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.42s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.46it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.26it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 1layer_d4_l0.1
+  Layers: [0]
+  Depth: 4
+  Lambda: 0.1
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,648
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:17:42, 11.81s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:07:35, 11.67s/it]Computing perplexity:   0%|          | 3/4358 [00:35<14:12:50, 11.75s/it]Computing perplexity:   0%|          | 4/4358 [00:46<14:06:34, 11.67s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:05:34, 11.66s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:07:26, 11.68s/it]
+
+Toroidal (1 layer, d=4, λ=0.1) Perplexity: 2814.14
+Loss: 7.9424
+Throughput: 44 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.35s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.32it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 4layer_d2_l0.0
+  Layers: [0, 8, 16, 24]
+  Depth: 2
+  Lambda: 0.0
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 8 with ToroidalAttention...
+  ✓ Replaced model.layers[8].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 16 with ToroidalAttention...
+  ✓ Replaced model.layers[16].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 24 with ToroidalAttention...
+  ✓ Replaced model.layers[24].self_attn
+  ToroidalAttention parameters: 26,224,644
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:05:23, 11.64s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:12:13, 11.74s/it]Computing perplexity:   0%|          | 3/4358 [00:35<14:18:27, 11.83s/it]Computing perplexity:   0%|          | 4/4358 [00:47<14:12:24, 11.75s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:14:17, 11.78s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:13:38, 11.77s/it]
+
+Toroidal (4 layers, d=2, λ=0.0) Perplexity: 5946.34
+Loss: 8.6905
+Throughput: 43 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.28s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.38it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 4layer_d2_l0.1
+  Layers: [0, 8, 16, 24]
+  Depth: 2
+  Lambda: 0.1
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 8 with ToroidalAttention...
+  ✓ Replaced model.layers[8].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 16 with ToroidalAttention...
+  ✓ Replaced model.layers[16].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Replacing attention in layer 24 with ToroidalAttention...
+  ✓ Replaced model.layers[24].self_attn
+  ToroidalAttention parameters: 26,224,644
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:20:10, 11.85s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:11:21, 11.73s/it]Computing perplexity:   0%|          | 3/4358 [00:35<14:11:20, 11.73s/it]Computing perplexity:   0%|          | 4/4358 [00:46<14:11:06, 11.73s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:09:21, 11.71s/it]Computing perplexity:   0%|          | 5/4358 [00:58<14:10:33, 11.72s/it]
+
+Toroidal (4 layers, d=2, λ=0.1) Perplexity: 5368.17
+Loss: 8.5882
+Throughput: 44 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.32s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.55it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.34it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 4layer_d4_l0.0
+  Layers: [0, 8, 16, 24]
+  Depth: 4
+  Lambda: 0.0
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 8 with ToroidalAttention...
+  ✓ Replaced model.layers[8].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 16 with ToroidalAttention...
+  ✓ Replaced model.layers[16].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 24 with ToroidalAttention...
+  ✓ Replaced model.layers[24].self_attn
+  ToroidalAttention parameters: 26,224,648
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:12<14:41:49, 12.14s/it]Computing perplexity:   0%|          | 2/4358 [00:24<14:38:16, 12.10s/it]Computing perplexity:   0%|          | 3/4358 [00:36<14:30:12, 11.99s/it]Computing perplexity:   0%|          | 4/4358 [00:48<14:30:51, 12.00s/it]Computing perplexity:   0%|          | 5/4358 [01:00<14:29:30, 11.98s/it]Computing perplexity:   0%|          | 5/4358 [01:00<14:31:15, 12.01s/it]
+
+Toroidal (4 layers, d=4, λ=0.0) Perplexity: 4274.37
+Loss: 8.3604
+Throughput: 43 tokens/s
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.27s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.38it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+
+================================================================================
+TOROIDAL: 4layer_d4_l0.1
+  Layers: [0, 8, 16, 24]
+  Depth: 4
+  Lambda: 0.1
+================================================================================
+
+Replacing attention in layer 0 with ToroidalAttention...
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 8 with ToroidalAttention...
+  ✓ Replaced model.layers[8].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 16 with ToroidalAttention...
+  ✓ Replaced model.layers[16].self_attn
+  ToroidalAttention parameters: 26,224,648
+
+Replacing attention in layer 24 with ToroidalAttention...
+  ✓ Replaced model.layers[24].self_attn
+  ToroidalAttention parameters: 26,224,648
+  Running on: cpu (model too large for GPU)
+Computing perplexity:   0%|          | 0/4358 [00:00<?, ?it/s]Computing perplexity:   0%|          | 1/4358 [00:11<14:11:31, 11.73s/it]Computing perplexity:   0%|          | 2/4358 [00:23<14:15:02, 11.78s/it]Computing perplexity:   0%|          | 3/4358 [00:35<14:15:26, 11.79s/it]Computing perplexity:   0%|          | 4/4358 [00:47<14:26:04, 11.93s/it]Computing perplexity:   0%|          | 5/4358 [00:59<14:31:22, 12.01s/it]Computing perplexity:   0%|          | 5/4358 [00:59<14:25:26, 11.93s/it]
+
+Toroidal (4 layers, d=4, λ=0.1) Perplexity: 4441.29
+Loss: 8.3987
+Throughput: 43 tokens/s
+
+================================================================================
+Results saved to: results/benchmarks/perplexity_quick_validation.json
+================================================================================
+
+================================================================================
+SUMMARY
+================================================================================
+Config                                     Perplexity       Loss     Tokens/s
+--------------------------------------------------------------------------------
+baseline                                      1365.04     7.2189           43
+toroidal_1layer_d2_l0.0                       2940.95     7.9865           44
+toroidal_1layer_d2_l0.1                       2853.35     7.9562           43
+toroidal_1layer_d4_l0.0                       2760.38     7.9231           44
+toroidal_1layer_d4_l0.1                       2814.14     7.9424           44
+toroidal_4layer_d2_l0.0                       5946.34     8.6905           43
+toroidal_4layer_d2_l0.1                       5368.17     8.5882           44
+toroidal_4layer_d4_l0.0                       4274.37     8.3604           43
+toroidal_4layer_d4_l0.1                       4441.29     8.3987           43
+
+================================================================================
+IMPROVEMENTS vs BASELINE
+================================================================================
+Config                                      Δ Perplexity     % Change
+--------------------------------------------------------------------------------
+toroidal_1layer_d2_l0.0                         -1575.90      -115.4%
+toroidal_1layer_d2_l0.1                         -1488.31      -109.0%
+toroidal_1layer_d4_l0.0                         -1395.33      -102.2%
+toroidal_1layer_d4_l0.1                         -1449.10      -106.2%
+toroidal_4layer_d2_l0.0                         -4581.30      -335.6%
+toroidal_4layer_d2_l0.1                         -4003.13      -293.3%
+toroidal_4layer_d4_l0.0                         -2909.33      -213.1%
+toroidal_4layer_d4_l0.1                         -3076.25      -225.4%

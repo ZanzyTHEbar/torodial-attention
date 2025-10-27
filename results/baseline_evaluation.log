@@ -1,0 +1,35 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Using device: cuda
+
+================================================================================
+BASELINE PHI-2 EVALUATION
+================================================================================
+
+[1/4] Loading Phi-2 model...
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 28.86it/s]
+  ✓ Model loaded on cuda
+  Total parameters: 2,779,683,840
+
+[2/4] Loading WikiText-2 validation set...
+  ✓ Loaded 50 samples
+
+[3/4] Evaluating...
+Evaluating:   0%|          | 0/50 [00:00<?, ?it/s]Evaluating:   4%|▍         | 2/50 [00:00<00:06,  7.25it/s]Evaluating:  12%|█▏        | 6/50 [00:00<00:02, 16.81it/s]Evaluating:  18%|█▊        | 9/50 [00:00<00:02, 19.28it/s]Evaluating:  24%|██▍       | 12/50 [00:00<00:02, 18.57it/s]Evaluating:  30%|███       | 15/50 [00:00<00:01, 20.78it/s]Evaluating:  36%|███▌      | 18/50 [00:00<00:01, 22.42it/s]Evaluating:  42%|████▏     | 21/50 [00:01<00:01, 23.63it/s]Evaluating:  48%|████▊     | 24/50 [00:01<00:01, 24.47it/s]Evaluating:  54%|█████▍    | 27/50 [00:01<00:00, 25.09it/s]Evaluating:  60%|██████    | 30/50 [00:01<00:00, 25.54it/s]Evaluating:  66%|██████▌   | 33/50 [00:01<00:00, 25.80it/s]Evaluating:  72%|███████▏  | 36/50 [00:01<00:00, 25.97it/s]Evaluating:  78%|███████▊  | 39/50 [00:01<00:00, 26.04it/s]Evaluating:  84%|████████▍ | 42/50 [00:01<00:00, 26.16it/s]Evaluating:  90%|█████████ | 45/50 [00:02<00:00, 22.80it/s]Evaluating: 100%|██████████| 50/50 [00:02<00:00, 28.47it/s]Evaluating: 100%|██████████| 50/50 [00:02<00:00, 23.58it/s]
+
+[4/4] Results:
+================================================================================
+BASELINE PHI-2 RESULTS
+================================================================================
+Model: Phi-2 Baseline (no toroidal attention)
+Dataset: WikiText-2 validation
+Samples: 33
+Average Loss: 6.4841
+Perplexity: 654.63
+Device: cuda
+Dtype: float16
+================================================================================
+
+✅ Results saved to: results/baseline_phi2.json
+
+Next: Run comparison with toroidal attention results
+[W1025 22:40:29.167663074 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

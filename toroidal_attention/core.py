@@ -189,24 +189,48 @@ class ToroidalAttention(nn.Module):
 
     def forward(
         self,
-        x: torch.Tensor,
+        x: Optional[torch.Tensor] = None,
+        hidden_states: Optional[torch.Tensor] = None,
         mask: Optional[torch.Tensor] = None,
-        return_attention: bool = False
+        attention_mask: Optional[torch.Tensor] = None,
+        return_attention: bool = False,
+        output_attentions: bool = False,
+        **kwargs  # Accept and ignore other kwargs from HF models
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
         """
         Forward pass of toroidal attention.
 
+        Compatible with both standalone and HuggingFace model integration.
+
         Args:
-            x (torch.Tensor): Input tensor, shape (B, N, d_model)
+            x (torch.Tensor, optional): Input tensor, shape (B, N, d_model)
+                                       (used in standalone mode)
+            hidden_states (torch.Tensor, optional): Input tensor, shape (B, N, d_model)
+                                                   (used in HF model integration)
             mask (torch.Tensor, optional): Attention mask, shape (B, N, N) or (N, N)
                                           True/1 for positions to mask out
+            attention_mask (torch.Tensor, optional): HF-style attention mask
             return_attention (bool): Whether to return attention weights
+            output_attentions (bool): HF-style flag for returning attention weights
+            **kwargs: Additional kwargs from HF models (ignored)
 
         Returns:
             output (torch.Tensor): Attention output, shape (B, N, d_model)
             attention_weights (torch.Tensor, optional): If return_attention=True,
                                                         shape (B, H, N, N)
         """
+        # Handle both standalone and HF integration API
+        if x is None and hidden_states is None:
+            raise ValueError("Either x or hidden_states must be provided")
+        x = x if x is not None else hidden_states
+        
+        # Handle mask naming variants
+        if mask is None and attention_mask is not None:
+            mask = attention_mask
+        
+        # Handle attention output flag variants
+        return_attention = return_attention or output_attentions
+        
         B, N, d_model = x.shape
         device = x.device
 
@@ -234,8 +258,9 @@ class ToroidalAttention(nn.Module):
 
         # 3. Apply 3D RoPE to Q and K (cached)
         sin_emb, cos_emb = self._get_rope_embeddings(N, device)  # (N, D, head_dim_per_depth//2)
-        sin_emb = sin_emb.unsqueeze(0).unsqueeze(3)  # (1, N, D, 1, head_dim//2)
-        cos_emb = cos_emb.unsqueeze(0).unsqueeze(3)  # (1, N, D, 1, head_dim//2)
+        # Ensure RoPE embeddings match input dtype
+        sin_emb = sin_emb.to(Q_3d.dtype).unsqueeze(0).unsqueeze(3)  # (1, N, D, 1, head_dim//2)
+        cos_emb = cos_emb.to(Q_3d.dtype).unsqueeze(0).unsqueeze(3)  # (1, N, D, 1, head_dim//2)
         Q_rot = self.pos_encoding.apply_rotary_embedding(Q_3d, sin_emb, cos_emb)
         K_rot = self.pos_encoding.apply_rotary_embedding(K_3d, sin_emb, cos_emb)
 
@@ -306,41 +331,52 @@ class ToroidalAttention(nn.Module):
             )
         else:
             # Manual path: compute scores → softmax → matmul (supports batch-specific masks)
+            # CRITICAL FIX: Compute attention scores in fp32 to prevent overflow
+            # fp16 range is only ±65504; attention logits can easily exceed this
+            original_dtype = Q_flat.dtype
+            Q_fp32 = Q_flat.float()
+            K_fp32 = K_flat.float()
+            
             chunk = self.attn_chunk_size
             if chunk is None:
-                scores = torch.matmul(Q_flat, K_flat.transpose(-2, -1)) / math.sqrt(head_dim_per_depth)  # (B,H,ND,ND)
-                scores = scores + attn_bias_2d.unsqueeze(0).unsqueeze(0)
+                scores = torch.matmul(Q_fp32, K_fp32.transpose(-2, -1)) / math.sqrt(head_dim_per_depth)  # (B,H,ND,ND) in fp32
+                scores = scores + attn_bias_2d.float().unsqueeze(0).unsqueeze(0)
                 if window_mask_2d is not None:
                     scores = scores + window_mask_2d.unsqueeze(0).unsqueeze(0)
                 if extra_mask_2d is not None:
                     scores = scores + extra_mask_2d.unsqueeze(0).unsqueeze(0)
 
-                # Batch masks
+                # Batch masks (keep in fp32)
                 if mask is not None:
                     if mask.dim() == 3 and mask.shape[1:] == (N, N):
                         base = mask.to(torch.bool)
                         mask_nd = base.unsqueeze(2).unsqueeze(4).expand(B, N, self.depth, N, self.depth).reshape(B, ND, ND)
-                        scores = scores + mask_nd.unsqueeze(1).to(Q_flat.dtype) * MASK_VALUE
+                        scores = scores + mask_nd.unsqueeze(1).float() * MASK_VALUE
                     elif mask.dim() == 2 and mask.shape == (B, N):
                         pad = mask.to(torch.bool)
                         pad_nd = pad.unsqueeze(-1).expand(B, N, self.depth).reshape(B, ND)
                         key_invalid = ~pad_nd
-                        scores = scores + key_invalid.unsqueeze(1).unsqueeze(2).to(Q_flat.dtype) * MASK_VALUE
+                        scores = scores + key_invalid.unsqueeze(1).unsqueeze(2).float() * MASK_VALUE
 
+                # Softmax in fp32 for stability, then cast back for memory efficiency
                 attn_weights = torch.softmax(scores, dim=-1)
                 if self.dropout is not None:
                     attn_weights = self.dropout(attn_weights)
+                # Cast back to original dtype for matmul (saves memory)
+                attn_weights = attn_weights.to(original_dtype)
                 attn_output_flat = torch.matmul(attn_weights, V_flat)
             else:
+                # Chunked attention path - also use fp32 for scores
                 outputs = []
                 attn_weights_chunks = [] if return_attention else None
                 for start in range(0, ND, chunk):
                     end = min(start + chunk, ND)
-                    Qc = Q_flat[:, :, start:end, :]
+                    Qc = Q_fp32[:, :, start:end, :]  # Use fp32 version
 
                     def _chunk_forward(qs):
-                        sc = torch.matmul(qs, K_flat.transpose(-2, -1)) / math.sqrt(head_dim_per_depth)
-                        sc = sc + attn_bias_2d[start:end, :].unsqueeze(0).unsqueeze(0)
+                        # Compute scores in fp32
+                        sc = torch.matmul(qs, K_fp32.transpose(-2, -1)) / math.sqrt(head_dim_per_depth)
+                        sc = sc + attn_bias_2d[start:end, :].float().unsqueeze(0).unsqueeze(0)
                         if window_mask_2d is not None:
                             sc = sc + window_mask_2d[start:end, :].unsqueeze(0).unsqueeze(0)
                         if extra_mask_2d is not None:
@@ -348,15 +384,17 @@ class ToroidalAttention(nn.Module):
                         if mask is not None and mask.dim() == 3 and mask.shape[1:] == (N, N):
                             base = mask.to(torch.bool)
                             mask_nd = base.unsqueeze(2).unsqueeze(4).expand(B, N, self.depth, N, self.depth).reshape(B, ND, ND)
-                            sc = sc + mask_nd[:, start:end, :].unsqueeze(1).to(Q_flat.dtype) * MASK_VALUE
+                            sc = sc + mask_nd[:, start:end, :].unsqueeze(1).float() * MASK_VALUE
                         elif mask is not None and mask.dim() == 2 and mask.shape == (B, N):
                             pad = mask.to(torch.bool)
                             pad_nd = pad.unsqueeze(-1).expand(B, N, self.depth).reshape(B, ND)
                             key_invalid = ~pad_nd
-                            sc = sc + key_invalid.unsqueeze(1).unsqueeze(2).to(Q_flat.dtype) * MASK_VALUE
+                            sc = sc + key_invalid.unsqueeze(1).unsqueeze(2).float() * MASK_VALUE
+                        # Softmax in fp32, cast back for matmul
                         aw = torch.softmax(sc, dim=-1)
                         if self.dropout is not None:
                             aw = self.dropout(aw)
+                        aw = aw.to(original_dtype)  # Cast back to fp16 if needed
                         return torch.matmul(aw, V_flat), aw
 
                     if self.use_checkpoint and Qc.requires_grad and not return_attention:

@@ -1,0 +1,290 @@
+{
+  "device_info": {
+    "device": "cuda",
+    "name": "NVIDIA GeForce RTX 2070 SUPER",
+    "capability": [
+      7,
+      5
+    ],
+    "memory_total_gb": 8.165523456
+  },
+  "benchmarks": [
+    {
+      "total_time_s": 0.005191714968532324,
+      "avg_time_s": 0.0005175414029508829,
+      "min_time_s": 0.0004910069983452559,
+      "max_time_s": 0.0006716569187119603,
+      "std_time_s": 5.46580740774516e-05,
+      "ms_per_iter": 0.5175414029508829,
+      "peak_memory_mb": 23.373824,
+      "n_iters": 10,
+      "seqs_per_sec": 1926.145803575761,
+      "tokens_per_sec": 986186.6514307896,
+      "n_params": 1050626,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 1,
+        "seq_len": 128,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.008324256050400436,
+      "avg_time_s": 0.0008306832984089852,
+      "min_time_s": 0.0008260890608653426,
+      "max_time_s": 0.0008402949897572398,
+      "std_time_s": 4.005039045296144e-06,
+      "ms_per_iter": 0.8306832984089851,
+      "peak_memory_mb": 33.236992,
+      "n_iters": 10,
+      "seqs_per_sec": 1201.3085541162507,
+      "tokens_per_sec": 1230139.9594150407,
+      "n_params": 1050626,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 1,
+        "seq_len": 256,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.018936528940685093,
+      "avg_time_s": 0.0018918444053269922,
+      "min_time_s": 0.0018876210087910295,
+      "max_time_s": 0.0019020079635083675,
+      "std_time_s": 4.2248639147146605e-06,
+      "ms_per_iter": 1.8918444053269923,
+      "peak_memory_mb": 53.74976,
+      "n_iters": 10,
+      "seqs_per_sec": 528.0798836641609,
+      "tokens_per_sec": 1081507.6017442015,
+      "n_params": 1050626,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 1,
+        "seq_len": 512,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.006434399983845651,
+      "avg_time_s": 0.0006418211385607719,
+      "min_time_s": 0.0006242770468816161,
+      "max_time_s": 0.0007173940539360046,
+      "std_time_s": 2.7183525162399746e-05,
+      "ms_per_iter": 0.6418211385607719,
+      "peak_memory_mb": 24.816128,
+      "n_iters": 10,
+      "seqs_per_sec": 1554.1464666645256,
+      "tokens_per_sec": 795722.9909322371,
+      "n_params": 1050628,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 2,
+        "seq_len": 128,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.01248120900709182,
+      "avg_time_s": 0.0012465849053114654,
+      "min_time_s": 0.0012443979503586888,
+      "max_time_s": 0.00125140103045851,
+      "std_time_s": 2.146773340427899e-06,
+      "ms_per_iter": 1.2465849053114653,
+      "peak_memory_mb": 36.90752,
+      "n_iters": 10,
+      "seqs_per_sec": 801.204434147205,
+      "tokens_per_sec": 820433.3405667379,
+      "n_params": 1050628,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 2,
+        "seq_len": 256,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.032835221965797246,
+      "avg_time_s": 0.0032816616934724153,
+      "min_time_s": 0.0032750690588727593,
+      "max_time_s": 0.0032899780198931694,
+      "std_time_s": 4.210643965052441e-06,
+      "ms_per_iter": 3.281661693472415,
+      "peak_memory_mb": 64.236032,
+      "n_iters": 10,
+      "seqs_per_sec": 304.5510095962343,
+      "tokens_per_sec": 623720.4676530878,
+      "n_params": 1050628,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 2,
+        "seq_len": 512,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.009095210931263864,
+      "avg_time_s": 0.0009080481715500355,
+      "min_time_s": 0.0008979839039966464,
+      "max_time_s": 0.0009171599522233009,
+      "std_time_s": 6.826477147114929e-06,
+      "ms_per_iter": 0.9080481715500355,
+      "peak_memory_mb": 26.388992,
+      "n_iters": 10,
+      "seqs_per_sec": 1099.479723513175,
+      "tokens_per_sec": 562933.6184387456,
+      "n_params": 1050632,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 4,
+        "seq_len": 128,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.023222674964927137,
+      "avg_time_s": 0.002320448006503284,
+      "min_time_s": 0.002309708041138947,
+      "max_time_s": 0.0023364280350506306,
+      "std_time_s": 8.208312465285417e-06,
+      "ms_per_iter": 2.320448006503284,
+      "peak_memory_mb": 43.198976,
+      "n_iters": 10,
+      "seqs_per_sec": 430.61361428443763,
+      "tokens_per_sec": 440948.34102726413,
+      "n_params": 1050632,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 4,
+        "seq_len": 256,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.06673506402876228,
+      "avg_time_s": 0.006671847216784954,
+      "min_time_s": 0.006666708970442414,
+      "max_time_s": 0.00667592603713274,
+      "std_time_s": 2.5481422198936343e-06,
+      "ms_per_iter": 6.671847216784954,
+      "peak_memory_mb": 89.401856,
+      "n_iters": 10,
+      "seqs_per_sec": 149.84626366268384,
+      "tokens_per_sec": 306885.1479811765,
+      "n_params": 1050632,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 4,
+        "seq_len": 512,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.017152582993730903,
+      "avg_time_s": 0.0017137955059297384,
+      "min_time_s": 0.0017079119570553303,
+      "max_time_s": 0.0017262670444324613,
+      "std_time_s": 5.0933008424181025e-06,
+      "ms_per_iter": 1.7137955059297383,
+      "peak_memory_mb": 32.680448,
+      "n_iters": 10,
+      "seqs_per_sec": 583.0025718957255,
+      "tokens_per_sec": 298497.31681061146,
+      "n_params": 1050656,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 8,
+        "seq_len": 128,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.056810308014974,
+      "avg_time_s": 0.005679372604936362,
+      "min_time_s": 0.005675308057107031,
+      "max_time_s": 0.005682652001269162,
+      "std_time_s": 2.4478897557855817e-06,
+      "ms_per_iter": 5.679372604936361,
+      "peak_memory_mb": 68.3648,
+      "n_iters": 10,
+      "seqs_per_sec": 176.0243932732104,
+      "tokens_per_sec": 180248.97871176744,
+      "n_params": 1050656,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 8,
+        "seq_len": 256,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    },
+    {
+      "total_time_s": 0.2190472410293296,
+      "avg_time_s": 0.02190217439783737,
+      "min_time_s": 0.021844986942596734,
+      "max_time_s": 0.02197345905005932,
+      "std_time_s": 3.241363447159529e-05,
+      "ms_per_iter": 21.90217439783737,
+      "peak_memory_mb": 190.065152,
+      "n_iters": 10,
+      "seqs_per_sec": 45.652252696764336,
+      "tokens_per_sec": 93495.81352297336,
+      "n_params": 1050656,
+      "config": {
+        "d_model": 512,
+        "n_heads": 8,
+        "depth": 8,
+        "seq_len": 512,
+        "batch_size": 4,
+        "backend": "sdpa",
+        "lambda_distance": 0.1,
+        "window_size": null
+      }
+    }
+  ],
+  "timestamp": "2025-10-25 19:22:28"
+}

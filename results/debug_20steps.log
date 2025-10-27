@@ -1,0 +1,33 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+================================================================================
+20-STEP TRAINING DEBUG
+================================================================================
+
+[1/4] Loading model...
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 28.35it/s]
+
+Replacing attention in layer 0 with ToroidalAttention...
+  Copying weights from original attention...
+  ✓ Weights copied successfully
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Freezing model parameters...
+  Total parameters: 2,779,683,844
+  Trainable parameters: 26,224,644 (0.94%)
+  Frozen parameters: 2,753,459,200
+   GPU Memory: 5.56GB
+
+[2/4] Preparing data...
+
+[3/4] Running 20 training steps...
+   Step  1: Loss= 0.6903, MaxGrad=4.54e+00 ✅
+
+🔴 Step 2: Loss is nan
+   Checking logits...
+   → NaN in logits
+
+================================================================================
+DEBUG COMPLETE
+================================================================================
+[W1025 22:21:31.956205094 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

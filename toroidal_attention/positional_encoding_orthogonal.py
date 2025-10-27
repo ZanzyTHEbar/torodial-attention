@@ -65,13 +65,20 @@ class Toroidal3DPositionalEncodingOrthogonal(nn.Module):
 
         self.register_buffer('freqs_depth', freqs_depth_ortho)
 
-        # Verify orthogonality (optional, for debugging)
+        # Verify orthogonality and enforce threshold
         ortho_score = self.get_orthogonality_score()
-        if ortho_score > 1e-4:
+        if ortho_score > 0.1:
+            raise ValueError(
+                f"Orthogonality score {ortho_score:.6f} exceeds threshold 0.1. "
+                f"Sequence and depth frequency bases are not sufficiently orthogonal. "
+                f"This may indicate a numerical issue or incompatible dimensions. "
+                f"Try adjusting d_model ({d_model}) or depth ({depth})."
+            )
+        elif ortho_score > 1e-4:
             import warnings
             warnings.warn(
-                f"Orthogonality may not be perfect: score={ortho_score:.6f}. "
-                "This should be very close to 0."
+                f"Orthogonality score {ortho_score:.6f} is acceptable but not perfect. "
+                f"For best results, score should be < 1e-4. Consider tuning parameters."
             )
 
     def forward(self, seq_len: int, depth_idx: int = None, device: torch.device = None):

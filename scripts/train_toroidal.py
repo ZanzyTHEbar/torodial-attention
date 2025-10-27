@@ -254,8 +254,9 @@ def train_epoch(
     config: TrainingConfig,
     metrics: MetricsTracker,
     epoch: int,
+    use_wandb: bool = False,
 ):
-    """Train for one epoch."""
+    """Train for one epoch with optional W&B logging."""
     model.train()
 
     pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{config.num_epochs}")
@@ -281,6 +282,22 @@ def train_epoch(
         # Update metrics
         current_lr = scheduler.get_last_lr()[0]
         metrics.update_train(loss.item(), grad_norm.item(), current_lr)
+        
+        # Log to W&B
+        global_step = epoch * len(train_loader) + step
+        if use_wandb and step % 10 == 0:
+            try:
+                import wandb
+                wandb.log({
+                    'train/loss': loss.item(),
+                    'train/perplexity': np.exp(loss.item()),
+                    'train/grad_norm': grad_norm.item(),
+                    'train/learning_rate': current_lr,
+                    'epoch': epoch + 1,
+                    'global_step': global_step,
+                })
+            except:
+                pass
 
         # Update progress bar
         pbar.set_postfix({
@@ -294,6 +311,19 @@ def train_epoch(
         if (step + 1) % config.eval_every == 0:
             val_loss, val_ppl = evaluate(model, val_loader, config.device)
             is_best = metrics.update_val(val_loss)
+            
+            # Log validation to W&B
+            if use_wandb:
+                try:
+                    import wandb
+                    wandb.log({
+                        'val/loss': val_loss,
+                        'val/perplexity': val_ppl,
+                        'val/best_perplexity': metrics.best_val_perplexity,
+                        'global_step': global_step,
+                    })
+                except:
+                    pass
 
             print(f"\n  Validation: loss={val_loss:.4f}, perplexity={val_ppl:.2f}")
 
@@ -345,11 +375,30 @@ def save_checkpoint(
 
 def train_toroidal_attention(config: TrainingConfig):
     """
-    Main training function.
+    Main training function with optional W&B logging.
 
     Args:
         config: Training configuration
     """
+    # Initialize W&B if enabled
+    use_wandb = config.to_dict().get('use_wandb', False)
+    if use_wandb:
+        try:
+            import wandb
+            wandb.init(
+                project=config.to_dict().get('wandb_project', 'toroidal-attention'),
+                name=config.to_dict().get('wandb_run_name', f"depth{config.depth}_layer{config.layer_idx}"),
+                config=config.to_dict(),
+                tags=[f"depth{config.depth}", f"fusion_{config.fusion_mode}", config.dataset_type],
+            )
+            print("✓ W&B logging enabled")
+        except ImportError:
+            print("⚠️  W&B not installed, disabling logging (pip install wandb)")
+            use_wandb = False
+        except Exception as e:
+            print(f"⚠️  W&B initialization failed: {e}")
+            use_wandb = False
+    
     print("=" * 60)
     print("Toroidal Attention Training")
     print("=" * 60)
@@ -458,11 +507,25 @@ def train_toroidal_attention(config: TrainingConfig):
             config,
             metrics,
             epoch,
+            use_wandb=use_wandb,  # Pass W&B flag
         )
 
         # End-of-epoch evaluation
         val_loss, val_ppl = evaluate(model, val_loader, config.device)
         is_best = metrics.update_val(val_loss)
+        
+        # Log end-of-epoch metrics to W&B
+        if use_wandb:
+            try:
+                import wandb
+                wandb.log({
+                    'epoch_val/loss': val_loss,
+                    'epoch_val/perplexity': val_ppl,
+                    'epoch_val/best_perplexity': metrics.best_val_perplexity,
+                    'epoch': epoch + 1,
+                })
+            except:
+                pass
 
         print(f"\nEpoch {epoch+1} complete:")
         print(f"  Val loss: {val_loss:.4f}")
@@ -474,6 +537,14 @@ def train_toroidal_attention(config: TrainingConfig):
 
     # Save final metrics
     metrics.save(config.log_dir / "metrics.json")
+    
+    # Finish W&B run
+    if use_wandb:
+        try:
+            import wandb
+            wandb.finish()
+        except:
+            pass
 
     print("\n" + "=" * 60)
     print("Training complete!")

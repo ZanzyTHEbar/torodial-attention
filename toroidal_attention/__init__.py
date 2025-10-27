@@ -15,12 +15,14 @@ from .core import ToroidalAttention
 from .distance import compute_toroidal_distance
 from .fusion import DepthFusion
 from .positional_encoding import Toroidal3DPositionalEncoding
+from .positional_encoding_orthogonal import Toroidal3DPositionalEncodingOrthogonal
 from .latent import LatentCfg, LatentKV
 
 __version__ = "0.1.0"
 __all__ = [
     "ToroidalAttention",
     "Toroidal3DPositionalEncoding",
+    "Toroidal3DPositionalEncodingOrthogonal",
     "compute_toroidal_distance",
     "DepthFusion",
     "LatentCfg",

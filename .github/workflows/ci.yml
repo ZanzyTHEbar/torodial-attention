@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      run: |
+        uv python install ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras
+    
+    - name: Run ruff (linting)
+      run: |
+        uv run ruff check .
+    
+    - name: Run ruff (formatting check)
+      run: |
+        uv run ruff format --check .
+    
+    - name: Run enhanced validation
+      run: |
+        uv run python scripts/validate_implementation_enhanced.py
+    
+    - name: Run test suite
+      run: |
+        uv run pytest -q --tb=short
+    
+    - name: Run test suite with coverage
+      if: matrix.python-version == '3.12'
+      run: |
+        uv run pytest --cov=toroidal_attention --cov-report=xml --cov-report=term
+    
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.12'
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+        verbose: true
+
+  benchmark:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+    
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras
+    
+    - name: Run CPU benchmark (smoke test)
+      run: |
+        # Quick benchmark with small configs
+        uv run python -c "
+        import torch
+        from toroidal_attention import ToroidalAttention
+        import time
+
+        attn = ToroidalAttention(d_model=128, n_heads=4, depth=2)
+        x = torch.randn(2, 32, 128)
+        
+        # Warmup
+        for _ in range(3):
+            _ = attn(x)
+        
+        # Benchmark
+        start = time.perf_counter()
+        for _ in range(10):
+            _ = attn(x)
+        elapsed = time.perf_counter() - start
+        
+        print(f'Smoke test: {elapsed/10*1000:.1f} ms/iter')
+        "
+    
+    - name: Save benchmark results
+      run: |
+        uv run python scripts/benchmark_backends.py --device cpu --out benchmark_ci.json || true
+    
+    - name: Upload benchmark artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: benchmark_ci.json
+        if-no-files-found: warn
+

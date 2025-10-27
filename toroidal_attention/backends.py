@@ -54,28 +54,37 @@ def compute_attention_sdpa(
     - SDPA performs scaling internally; q,k should be unscaled.
     - attn_mask is additive and broadcastable to (B,H,L,S).
     - If both attn_bias_2d and extra_mask_2d provided, they are summed.
+    - CRITICAL FIX: Compute attention in fp32 to prevent overflow when using fp16 models
     """
     B, H, L, _ = q.shape
     S = k.shape[2]
     device = q.device
-    dtype = q.dtype
+    original_dtype = q.dtype
+    
+    # CRITICAL FIX: Cast Q/K to fp32 for attention computation to prevent overflow
+    # fp16 range is ±65504; attention scores can easily exceed this
+    q_fp32 = q.float()
+    k_fp32 = k.float()
+    v_fp32 = v.float()  # V also to fp32 for consistency
 
     bias = None
     if attn_bias_2d is not None or extra_mask_2d is not None:
-        # Sum into a single 2D bias
+        # Sum into a single 2D bias (also in fp32)
         bias_2d = None
         if attn_bias_2d is not None:
-            bias_2d = attn_bias_2d.to(device=device, dtype=dtype)
+            bias_2d = attn_bias_2d.to(device=device, dtype=torch.float32)
         if extra_mask_2d is not None:
-            extra = extra_mask_2d.to(device=device, dtype=dtype)
+            extra = extra_mask_2d.to(device=device, dtype=torch.float32)
             bias_2d = extra if bias_2d is None else (bias_2d + extra)
-        bias = _expand_bias_for_sdpa(bias_2d, B, H, L, S, device, dtype)
+        bias = _expand_bias_for_sdpa(bias_2d, B, H, L, S, device, torch.float32)
 
-    # SDPA expects (B,H,L,S) mask
+    # SDPA expects (B,H,L,S) mask - compute in fp32
     out = F.scaled_dot_product_attention(
-        q, k, v, attn_mask=bias, dropout_p=dropout_p, is_causal=is_causal
+        q_fp32, k_fp32, v_fp32, attn_mask=bias, dropout_p=dropout_p, is_causal=is_causal
     )
-    return out
+    
+    # Cast output back to original dtype for memory efficiency
+    return out.to(original_dtype)
 
 
 def has_flash2() -> bool:

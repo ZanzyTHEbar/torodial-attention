@@ -1,0 +1,9 @@
+{
+  "model": "Phi-2 Baseline (no toroidal attention)",
+  "dataset": "WikiText-2 validation",
+  "samples": 33,
+  "avg_loss": 6.484066688653194,
+  "perplexity": 654.6277075696496,
+  "device": "cuda",
+  "dtype": "float16"
+}

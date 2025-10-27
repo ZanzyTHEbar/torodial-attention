@@ -69,7 +69,18 @@ class Toroidal3DPositionalEncoding(nn.Module):
             import warnings
             warnings.warn(
                 f"Frequency bases are nearly identical for d_model={d_model}, depth={depth}. "
-                "This may reduce positional encoding effectiveness."
+                "This may reduce positional encoding effectiveness. "
+                "Consider using Toroidal3DPositionalEncodingOrthogonal (use_orthogonal_pe=True)."
+            )
+        
+        # Check orthogonality and warn if poor
+        ortho_score = self._compute_orthogonality(freqs_seq, freqs_depth)
+        if ortho_score > 0.5:
+            import warnings
+            warnings.warn(
+                f"Weak orthogonality detected: score={ortho_score:.4f} (0=perfect). "
+                f"For better performance, use Toroidal3DPositionalEncodingOrthogonal "
+                f"by setting use_orthogonal_pe=True in ToroidalAttention."
             )
 
     def _compute_orthogonality(self, freqs_seq: torch.Tensor, freqs_depth: torch.Tensor) -> float:

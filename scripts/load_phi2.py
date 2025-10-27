@@ -180,31 +180,36 @@ def replace_attention_layer(
     return original_attn
 
 
-def freeze_model_except_attention(model, layer_idx: int):
+def freeze_model_except_attention(model, layer_indices):
     """
-    Freeze all model parameters except the toroidal attention layer.
+    Freeze all model parameters except the toroidal attention layers.
 
-    This allows fine-tuning only the toroidal attention mechanism
+    This allows fine-tuning only the toroidal attention mechanisms
     while keeping the rest of Phi-2 frozen.
 
     Args:
         model: Phi-2 model with toroidal attention
-        layer_idx (int): Index of layer with toroidal attention
+        layer_indices: Single int or list of ints for layer indices with toroidal attention
     """
     print("\nFreezing model parameters...")
+
+    # Normalize to list
+    if isinstance(layer_indices, int):
+        layer_indices = [layer_indices]
 
     # Freeze all parameters
     for param in model.parameters():
         param.requires_grad = False
 
-    # Unfreeze toroidal attention
-    try:
-        attn_module = model.transformer.h[layer_idx].attn
-    except AttributeError:
-        attn_module = model.model.layers[layer_idx].self_attn
+    # Unfreeze toroidal attention layers
+    for layer_idx in layer_indices:
+        try:
+            attn_module = model.transformer.h[layer_idx].attn
+        except AttributeError:
+            attn_module = model.model.layers[layer_idx].self_attn
 
-    for param in attn_module.parameters():
-        param.requires_grad = True
+        for param in attn_module.parameters():
+            param.requires_grad = True
 
     # Count trainable parameters
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)

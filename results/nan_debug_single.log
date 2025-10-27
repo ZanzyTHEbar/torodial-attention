@@ -1,0 +1,45 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+================================================================================
+DIAGNOSTIC NaN DEBUGGING
+================================================================================
+
+[1/5] Loading Phi-2 model...
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 27.76it/s]
+
+[2/5] Replacing layer 0 with ToroidalAttention...
+
+Replacing attention in layer 0 with ToroidalAttention...
+  Copying weights from original attention...
+  ✓ Weights copied successfully
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Freezing model parameters...
+  Total parameters: 2,779,683,844
+  Trainable parameters: 26,224,644 (0.94%)
+  Frozen parameters: 2,753,459,200
+   GPU Memory: 5.56GB
+
+[3/5] Adding NaN detection hooks...
+
+[4/5] Preparing data...
+   Batch shape: torch.Size([1, 128])
+
+[5/5] Running forward pass with diagnostics...
+   → Forward pass...
+   ✅ Forward pass complete
+      Loss: 0.6335
+      Loss dtype: torch.float32
+      Logits shape: torch.Size([1, 128, 51200])
+      Logits range: [-10.55, 21.42]
+      Logits has NaN: False
+      Logits has Inf: False
+   → Backward pass...
+   ✅ Backward pass complete
+   → Checking gradients...
+   ✅ All gradients are finite
+
+================================================================================
+DIAGNOSTICS COMPLETE
+================================================================================
+[W1025 22:20:55.333161160 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

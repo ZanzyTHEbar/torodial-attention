@@ -1,0 +1,42 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+================================================================================
+COMPREHENSIVE EVALUATION: PHI-2 + TOROIDAL ATTENTION
+================================================================================
+
+[1/3] Loading model...
+Loading Phi-2 model: microsoft/phi-2
+  Model config:
+    Hidden size: 2560
+    Num attention heads: 32
+    Num hidden layers: 32
+    Vocab size: 51200
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.68s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.26it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.08it/s]
+  Model loaded on device: cpu
+  Total parameters: 2,779,683,840
+  Trainable parameters: 2,779,683,840
+Traceback (most recent call last):
+  File "/root/torodial-attention/scripts/evaluate_comprehensive.py", line 367, in <module>
+    main()
+  File "/root/torodial-attention/scripts/evaluate_comprehensive.py", line 296, in main
+    model = model.to(device)
+            ^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4343, in to
+    return super().to(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1371, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 930, in _apply
+    module._apply(fn)
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 930, in _apply
+    module._apply(fn)
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 930, in _apply
+    module._apply(fn)
+  [Previous line repeated 2 more times]
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 957, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1357, in convert
+    return t.to(
+           ^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 100.00 MiB. GPU 0 has a total capacity of 7.60 GiB of which 83.44 MiB is free. Process 110618 has 7.52 GiB memory in use. Of the allocated memory 7.42 GiB is allocated by PyTorch, and 1.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

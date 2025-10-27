@@ -1,0 +1,101 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+================================================================================
+DIAGNOSTIC NaN DEBUGGING
+================================================================================
+
+[1/5] Loading Phi-2 model...
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 28.54it/s]
+Traceback (most recent call last):
+  File "/root/torodial-attention/scripts/debug_nan.py", line 104, in test_training_step
+    outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=input_ids)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 918, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py", line 479, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+                                       ^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 1064, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py", line 401, in forward
+    layer_outputs = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/modeling_layers.py", line 94, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/utils/deprecation.py", line 172, in wrapped_func
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py", line 249, in forward
+    feed_forward_hidden_states = self.resid_dropout(self.mlp(hidden_states))
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py", line 204, in forward
+    hidden_states = self.fc1(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1881, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/root/torodial-attention/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1842, in inner
+    hook_result = hook(self, args, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/torodial-attention/scripts/debug_nan.py", line 21, in hook
+    if torch.isnan(output).any() or torch.isinf(output).any():
+                                    ^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 14.00 MiB. GPU 0 has a total capacity of 7.60 GiB of which 21.44 MiB is free. Process 412601 has 7.58 GiB memory in use. Of the allocated memory 7.42 GiB is allocated by PyTorch, and 40.43 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+[2/5] Replacing layer 0 with ToroidalAttention...
+
+Replacing attention in layer 0 with ToroidalAttention...
+  Copying weights from original attention...
+  ✓ Weights copied successfully
+  ✓ Replaced model.layers[0].self_attn
+  ToroidalAttention parameters: 26,224,644
+
+Freezing model parameters...
+  Total parameters: 2,779,683,844
+  Trainable parameters: 26,224,644 (0.94%)
+  Frozen parameters: 2,753,459,200
+   GPU Memory: 5.56GB
+
+[3/5] Adding NaN detection hooks...
+
+[4/5] Preparing data...
+   Batch shape: torch.Size([4, 166])
+
+[5/5] Running forward pass with diagnostics...
+   → Forward pass...
+
+❌ ERROR: CUDA out of memory. Tried to allocate 14.00 MiB. GPU 0 has a total capacity of 7.60 GiB of which 21.44 MiB is free. Process 412601 has 7.58 GiB memory in use. Of the allocated memory 7.42 GiB is allocated by PyTorch, and 40.43 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+================================================================================
+DIAGNOSTICS COMPLETE
+================================================================================
+[W1025 22:18:34.809663892 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
