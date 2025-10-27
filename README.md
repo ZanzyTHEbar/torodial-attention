@@ -9,6 +9,9 @@ A novel 3D attention mechanism inspired by HDD platter geometry, featuring circu
 
 ## 🎯 Overview
 
+> [!WARNING]
+> Highly experimental - probably bugs
+
 Toroidal Attention reimagines the transformer context window as a 3D toroidal structure:
 
 - **Circular wrapping** (like HDD tracks): Sequence positions wrap periodically to eliminate edge biases
